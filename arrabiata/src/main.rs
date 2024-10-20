@@ -97,6 +97,7 @@ pub fn main() {
 
         // FIXME:
         // Absorb all commitments in the sponge.
+        env.absorb_commitments();
         // Q: what is the initial state of the sponge?
         // Q: where do we get it. We should keep it in the env.
 
