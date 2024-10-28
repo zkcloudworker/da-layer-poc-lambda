@@ -1074,9 +1074,9 @@ where
     pub fn absorb_commitments(&mut self) {
         // FIXME: should be from the environment
         let old_state = BigInt::from(42);
-        let sponge_e1: FqSponge<E1::BaseField, E1, E1::ScalarField> =
+        let sponge_e1: DefaultFqSponge<E1::Params, E1::SpongeConstants> =
             DefaultFqSponge::new(E1::SPONGE_CONSTANTS);
-        let sponge_e2: FqSponge<E2::BaseField, E2, E2::ScalarField> =
+        let sponge_e2: DefaultFqSponge<E2::Params, E2::SpongeConstants> =
             DefaultFqSponge::new(E2::SPONGE_CONSTANTS);
     }
 }
