@@ -73,3 +73,26 @@ impl SWCurveConfig for LegacyPallasParameters {
 }
 
 pub type LegacyPallas = Affine<LegacyPallasParameters>;
+
+////////////////////////////////////////////////////////////////////////////
+// WASM experimentation
+////////////////////////////////////////////////////////////////////////////
+
+#[derive(Copy, Clone, Default, PartialEq, Eq)]
+pub struct WasmPallasParameters;
+
+impl CurveConfig for WasmPallasParameters {
+    type BaseField = crate::pasta::wasm_friendly::Fp9;
+
+    type ScalarField = crate::pasta::wasm_friendly::Fq9; // FIXME must be Fq9 of course
+
+    /// COFACTOR = 1
+    const COFACTOR: &'static [u64] = &[0x1];
+
+    /// COFACTOR_INV = 1
+    const COFACTOR_INV: crate::pasta::wasm_friendly::Fq9 = From::from(MontFp!("1"));
+}
+
+pub type WasmPallas = Affine<WasmPallasParameters>;
+
+pub type WasmProjectivePallas = Projective<WasmPallasParameters>;

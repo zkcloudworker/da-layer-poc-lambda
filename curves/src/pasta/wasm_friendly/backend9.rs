@@ -26,6 +26,7 @@ pub const fn from_64x4(pa: [u64; 4]) -> [u32; 9] {
     p[8] = (pa[3] >> 40) as u32;
     p
 }
+
 pub const fn to_64x4(pa: [u32; 9]) -> [u64; 4] {
     let mut p = [0u64; 4];
     p[0] = pa[0] as u64;

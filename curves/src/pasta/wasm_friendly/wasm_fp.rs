@@ -4,15 +4,16 @@
  * Most of this code was copied over from ark_ff::Fp
  */
 use crate::pasta::wasm_friendly::bigint32::BigInt;
-use ark_ff::{One, Zero};
+use ark_ff::{One, Zero, Field};
 use ark_serialize::{
-    CanonicalDeserialize, CanonicalSerialize, Compress, Read, SerializationError, Valid, Validate,
+    CanonicalDeserialize, CanonicalSerialize, Compress, Read, SerializationError, Valid, Validate, Flags,
     Write,
 };
 use derivative::Derivative;
 use num_bigint::BigUint;
 use std::{
     marker::PhantomData,
+    cmp::Ordering,
     ops::{Add, AddAssign, Mul, MulAssign},
 };
 
@@ -233,4 +234,230 @@ impl<P: FpBackend<N>, const N: usize> std::fmt::Display for Fp<P, N> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         BigUint::from(*self).fmt(f)
     }
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+// Field
+////////////////////////////////////////////////////////////////////////////
+
+// TODO one needs to implement these traits:
+//
+//    + Neg<Output = Self>
+//    + UniformRand
+//    + Zeroize
+//    + CanonicalSerializeWithFlags
+//    + CanonicalDeserializeWithFlags
+//    + Sub<Self, Output = Self>
+//    + Div<Self, Output = Self>
+//    + AddAssign<Self>
+//    + SubAssign<Self>
+//    + MulAssign<Self>
+//    + DivAssign<Self>
+//    + for<'a> Sub<&'a Self, Output = Self>
+//    + for<'a> Div<&'a Self, Output = Self>
+//    + for<'a> SubAssign<&'a Self>
+//    + for<'a> DivAssign<&'a Self>
+//    + for<'a> Add<&'a mut Self, Output = Self>
+//    + for<'a> Sub<&'a mut Self, Output = Self>
+//    + for<'a> Mul<&'a mut Self, Output = Self>
+//    + for<'a> Div<&'a mut Self, Output = Self>
+//    + for<'a> AddAssign<&'a mut Self>
+//    + for<'a> SubAssign<&'a mut Self>
+//    + for<'a> MulAssign<&'a mut Self>
+//    + for<'a> DivAssign<&'a mut Self>
+//    + core::iter::Sum<Self>
+//    + for<'a> core::iter::Sum<&'a Self>
+//    + core::iter::Product<Self>
+//    + for<'a> core::iter::Product<&'a Self>
+
+
+impl<P: FpBackend<N>, const N: usize> Ord for Fp<P, N> {
+    #[inline(always)]
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.into_bigint().cmp(&other.into_bigint())
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> PartialOrd for Fp<P, N> {
+    #[inline(always)]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+
+
+impl<P: FpBackend<N>, const N: usize> From<u128> for Fp<P,N> {
+    fn from(other: u128) -> Self {
+        todo!()
+    }
+}
+
+
+impl<P: FpBackend<N>, const N: usize> From<u64> for Fp<P,N> {
+    fn from(other: u64) -> Self {
+        todo!()
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> From<u32> for Fp<P,N> {
+    fn from(other: u32) -> Self {
+        todo!()
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> From<u16> for Fp<P,N> {
+    fn from(other: u16) -> Self {
+        todo!()
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> From<u8> for Fp<P,N> {
+    fn from(other: u8) -> Self {
+        todo!()
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> From<bool> for Fp<P,N> {
+    fn from(other: bool) -> Self {
+        todo!()
+    }
+}
+
+impl<P: FpBackend<N>, const N: usize> Field for Fp<P,N> {
+    type BasePrimeField = Self;
+    fn extension_degree() -> u64 {
+        1
+    }
+    fn from_base_prime_field_elems(elems: &[Self::BasePrimeField]) -> Option<Self> {
+        todo!()
+        //if elems.len() != (Self::extension_degree() as usize) {
+        //    return None;
+        //}
+        //Some(elems[0])
+    }
+    #[inline]
+    fn double(&self) -> Self {
+        todo!()
+        //let mut temp = *self;
+        //temp.double_in_place();
+        //temp
+    }
+    #[inline]
+    fn double_in_place(&mut self) -> &mut Self {
+        todo!()
+        //self.0.mul2();
+        //self.reduce();
+        //self
+    }
+    #[inline]
+    fn characteristic() -> [u64; 4] {
+        todo!()
+        //C::MODULUS.to_64x4()
+    }
+    #[inline]
+    fn from_random_bytes_with_flags<F: Flags>(bytes: &[u8]) -> Option<(Self, F)> {
+        todo!()
+        //if F::BIT_SIZE > 8 {
+        //    return None;
+        //} else {
+        //    let mut result_bytes = [0u8; 4 * 8 + 1];
+        //    result_bytes
+        //        .iter_mut()
+        //        .zip(bytes)
+        //        .for_each(|(result, input)| {
+        //            *result = *input;
+        //        });
+        //    let last_limb_mask = (u64::MAX >> C::REPR_SHAVE_BITS).to_le_bytes();
+        //    let mut last_bytes_mask = [0u8; 9];
+        //    last_bytes_mask[..8].copy_from_slice(&last_limb_mask);
+        //    let output_byte_size = buffer_byte_size(C::MODULUS_BITS as usize + F::BIT_SIZE);
+        //    let flag_location = output_byte_size - 1;
+        //    let flag_location_in_last_limb = flag_location - (8 * (4 - 1));
+        //    let last_bytes = &mut result_bytes[8 * (4 - 1)..];
+        //    let flags_mask = u8::MAX.checked_shl(8 - (F::BIT_SIZE as u32)).unwrap_or(0);
+        //    let mut flags: u8 = 0;
+        //    for (i, (b, m)) in last_bytes.iter_mut().zip(&last_bytes_mask).enumerate() {
+        //        if i == flag_location_in_last_limb {
+        //            flags = *b & flags_mask;
+        //        }
+        //        *b &= m;
+        //    }
+        //    Self::deserialize(&result_bytes[..(4 * 8)])
+        //        .ok()
+        //        .and_then(|f| F::from_u8(flags).map(|flag| (f, flag)))
+        //}
+    }
+    #[inline(always)]
+    fn square(&self) -> Self {
+        todo!()
+        //let mut temp = self.clone();
+        //temp.square_in_place();
+        //temp
+    }
+    #[inline(always)]
+    fn square_in_place(&mut self) -> &mut Self {
+        todo!()
+        //self.const_square();
+        //self
+    }
+    #[inline]
+    fn inverse(&self) -> Option<Self> {
+        todo!()
+        //if self.is_zero() {
+        //    None
+        //} else {
+        //    let one = BigInteger256::from(1);
+        //    let mut u = self.0;
+        //    let mut v = C::MODULUS;
+        //    let mut b = Self(C::R2, PhantomData);
+        //    let mut c = Self::zero();
+        //    while u != one && v != one {
+        //        while u.is_even() {
+        //            u.div2();
+        //            if b.0.is_even() {
+        //                b.0.div2();
+        //            } else {
+        //                b.0.add_nocarry(&C::MODULUS);
+        //                b.0.div2();
+        //            }
+        //        }
+        //        while v.is_even() {
+        //            v.div2();
+        //            if c.0.is_even() {
+        //                c.0.div2();
+        //            } else {
+        //                c.0.add_nocarry(&C::MODULUS);
+        //                c.0.div2();
+        //            }
+        //        }
+        //        if v < u {
+        //            u.sub_noborrow(&v);
+        //            b.sub_assign(&c);
+        //        } else {
+        //            v.sub_noborrow(&u);
+        //            c.sub_assign(&b);
+        //        }
+        //    }
+        //    if u == one {
+        //        Some(b)
+        //    } else {
+        //        Some(c)
+        //    }
+        //}
+    }
+    fn inverse_in_place(&mut self) -> Option<&mut Self> {
+        if let Some(inverse) = self.inverse() {
+            *self = inverse;
+            Some(self)
+        } else {
+            None
+        }
+    }
+    #[inline]
+    fn frobenius_map(&mut self, _: usize) {
+        todo!()
+    }
+
 }
