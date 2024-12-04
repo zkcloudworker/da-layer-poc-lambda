@@ -96,3 +96,11 @@ impl CurveConfig for WasmPallasParameters {
 pub type WasmPallas = Affine<WasmPallasParameters>;
 
 pub type WasmProjectivePallas = Projective<WasmPallasParameters>;
+
+impl SWCurveConfig for WasmPallasParameters {
+    const COEFF_A: Self::BaseField = todo!(); //MontFp!("0");
+
+    const COEFF_B: Self::BaseField = todo!(); // MontFp!("5");
+
+    const GENERATOR: Affine<Self> = todo!(); //Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
+}
