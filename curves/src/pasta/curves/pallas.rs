@@ -90,7 +90,7 @@ impl CurveConfig for WasmPallasParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: crate::pasta::wasm_friendly::Fq9 = From::from(MontFp!("1"));
+    const COFACTOR_INV: crate::pasta::wasm_friendly::Fq9 = todo!(); //From::from(MontFp!("1"));
 }
 
 pub type WasmPallas = Affine<WasmPallasParameters>;
