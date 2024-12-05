@@ -4,6 +4,7 @@ use ark_ec::{
     CurveConfig,
 };
 use ark_ff::{MontFp, Zero};
+use std::marker::PhantomData;
 
 /// G_GENERATOR_X =
 /// 1
@@ -90,7 +91,9 @@ impl CurveConfig for WasmPallasParameters {
     const COFACTOR: &'static [u64] = &[0x1];
 
     /// COFACTOR_INV = 1
-    const COFACTOR_INV: crate::pasta::wasm_friendly::Fq9 = todo!(); //From::from(MontFp!("1"));
+    // FIXME
+    const COFACTOR_INV: crate::pasta::wasm_friendly::Fq9 =
+        crate::pasta::wasm_friendly::Fp(crate::pasta::wasm_friendly::BigInt([0; 9]), PhantomData);
 }
 
 pub type WasmPallas = Affine<WasmPallasParameters>;
@@ -98,9 +101,17 @@ pub type WasmPallas = Affine<WasmPallasParameters>;
 pub type WasmProjectivePallas = Projective<WasmPallasParameters>;
 
 impl SWCurveConfig for WasmPallasParameters {
-    const COEFF_A: Self::BaseField = todo!(); //MontFp!("0");
+    // FIXME
+    const COEFF_A: Self::BaseField =
+        crate::pasta::wasm_friendly::Fp(crate::pasta::wasm_friendly::BigInt([0; 9]), PhantomData);
 
-    const COEFF_B: Self::BaseField = todo!(); // MontFp!("5");
+    // FIXME
+    const COEFF_B: Self::BaseField =
+        crate::pasta::wasm_friendly::Fp(crate::pasta::wasm_friendly::BigInt([0; 9]), PhantomData);
 
-    const GENERATOR: Affine<Self> = todo!(); //Affine::new_unchecked(G_GENERATOR_X, G_GENERATOR_Y);
+    // FIXME
+    const GENERATOR: Affine<Self> = Affine::new_unchecked(
+        crate::pasta::wasm_friendly::Fp(crate::pasta::wasm_friendly::BigInt([0; 9]), PhantomData),
+        crate::pasta::wasm_friendly::Fp(crate::pasta::wasm_friendly::BigInt([0; 9]), PhantomData),
+    );
 }

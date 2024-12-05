@@ -714,21 +714,21 @@ impl<P: FpBackend<N>, const N: usize> PrimeField for Fp<P, N> {
 }
 
 impl<P: FpBackend<N>, const N: usize> FftField for Fp<P, N> {
-    const GENERATOR: Self = todo!(); //Fp::new(P::ONE);
-    const TWO_ADICITY: u32 = todo!(); // P::TWO_ADICITY;
-    const TWO_ADIC_ROOT_OF_UNITY: Self = todo!(); //P::TWO_ADIC_ROOT_OF_UNITY;
-    const SMALL_SUBGROUP_BASE: Option<u32> = todo!(); // P::SMALL_SUBGROUP_BASE;
-    const SMALL_SUBGROUP_BASE_ADICITY: Option<u32> = todo!(); // P::SMALL_SUBGROUP_BASE_ADICITY;
-    const LARGE_SUBGROUP_ROOT_OF_UNITY: Option<Self> = todo!(); //P::LARGE_SUBGROUP_ROOT_OF_UNITY;
+    const GENERATOR: Self = Fp(P::MODULUS, PhantomData);
+    const TWO_ADICITY: u32 = 0; // FIXME!!! // P::TWO_ADICITY;
+    const TWO_ADIC_ROOT_OF_UNITY: Self = Fp(P::ZERO, PhantomData); // FIXME //P::TWO_ADIC_ROOT_OF_UNITY;
+    const SMALL_SUBGROUP_BASE: Option<u32> = None; //FIXME!! // P::SMALL_SUBGROUP_BASE;
+    const SMALL_SUBGROUP_BASE_ADICITY: Option<u32> = None; // FIXME! // P::SMALL_SUBGROUP_BASE_ADICITY;
+    const LARGE_SUBGROUP_ROOT_OF_UNITY: Option<Self> = None; // FIXME! //P::LARGE_SUBGROUP_ROOT_OF_UNITY;
 }
 
 impl<P: FpBackend<N>, const N: usize> Field for Fp<P, N> {
     type BasePrimeField = Self;
     type BasePrimeFieldIter = core::iter::Once<Self::BasePrimeField>;
 
-    const SQRT_PRECOMP: Option<ark_ff::SqrtPrecomputation<Self>> = todo!(); //P::SQRT_PRECOMP;
-    const ZERO: Self = todo!(); // Fp::new(P::ZERO);
-    const ONE: Self = todo!(); //Fp::new(P::ONE);
+    const SQRT_PRECOMP: Option<ark_ff::SqrtPrecomputation<Self>> = None; // FIXME //P::SQRT_PRECOMP;
+    const ZERO: Self = Fp(P::ZERO, PhantomData);
+    const ONE: Self = Fp(P::ONE, PhantomData);
 
     fn extension_degree() -> u64 {
         1
