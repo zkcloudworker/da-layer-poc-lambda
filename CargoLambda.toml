@@ -1,0 +1,5 @@
+[deploy]
+region = "eu-west-3"
+memory = 10240
+timeout = 900
+name = "lambda"

@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "lambda",
     "book",
     "data-storage",
     "turshi",
@@ -21,3 +22,4 @@ resolver = "2"
 lto = true
 panic = 'abort'
 # codegen-units = 1
+

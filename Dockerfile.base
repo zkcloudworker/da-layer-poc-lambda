@@ -1,0 +1,17 @@
+FROM public.ecr.aws/lambda/provided:al2023
+
+# Install build dependencies
+RUN dnf update -y && dnf install -y gcc openssl-devel curl-minimal tar xz
+
+# Install Zig
+RUN curl -O https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz \
+    && tar -xf zig-linux-x86_64-0.9.1.tar.xz \
+    && mv zig-linux-x86_64-0.9.1 /usr/local/zig \
+    && ln -s /usr/local/zig/zig /usr/local/bin/zig
+
+# Install Rust
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install cargo-lambda
+RUN cargo install cargo-lambda
