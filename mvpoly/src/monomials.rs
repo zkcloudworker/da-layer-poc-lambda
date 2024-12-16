@@ -472,6 +472,27 @@ impl<const N: usize, const D: usize, F: PrimeField> MVPoly<F, N, D> for Sparse<F
         cross_terms_by_powers_of_r
     }
 
+    fn compute_cross_terms_scaled(
+        &self,
+        eval1: &[F; N],
+        eval2: &[F; N],
+        u1: F,
+        u2: F,
+        scalar1: F,
+        scalar2: F,
+    ) -> HashMap<usize, F> {
+        assert!(
+            D - 1 >= 2,
+            "The degree of the polynomial must be greater than 2"
+        );
+        let cross_terms = self.compute_cross_terms(eval1, eval2, u1, u2);
+        let mut res = HashMap::new();
+        cross_terms.into_iter().for_each(|(power_r, coeff)| {
+            res.insert(power_r, coeff * scalar1);
+        });
+        // TODO: scale
+    }
+
     fn modify_monomial(&mut self, exponents: [usize; N], coeff: F) {
         self.monomials
             .entry(exponents)
